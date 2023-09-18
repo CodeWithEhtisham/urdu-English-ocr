@@ -29,34 +29,37 @@
 # # cv2.imshow('image', image)
 # cv2.waitKey()
 
-import cv2
-import numpy as np
+# import cv2
+# import numpy as np
 
-# Load image, grayscale, Gaussian blur, Otsu's threshold
-image = cv2.imread('pic.jpeg')
-gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-blur = cv2.GaussianBlur(gray, (3, 3), 0)
-thresh = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)[1]
+# # Load image, grayscale, Gaussian blur, Otsu's threshold
+# image = cv2.imread('pic.jpeg')
+# gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+# blur = cv2.GaussianBlur(gray, (3, 3), 0)
+# thresh = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)[1]
 
-# Detect vertical lines
-vertical_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (1, 50))
-vertical_mask = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, vertical_kernel, iterations=1)
+# # Detect vertical lines
+# vertical_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (1, 50))
+# vertical_mask = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, vertical_kernel, iterations=1)
 
-# Detect lines using HoughLinesP
-lines = cv2.HoughLinesP(vertical_mask, 1, np.pi / 180, 100, minLineLength=10, maxLineGap=100)
+# # Detect lines using HoughLinesP
+# lines = cv2.HoughLinesP(vertical_mask, 1, np.pi / 180, 100, minLineLength=50, maxLineGap=100)
 
-# Sort lines by their starting x-coordinate
-lines = sorted(lines, key=lambda line: line[0][0])
+# # Sort lines by their starting x-coordinate
+# lines = sorted(lines, key=lambda line: line[0][0])
+# print(len(lines))
+# # Draw lines sequentially
+# w=0
+# h=0
+# for line in lines:
+#     x1, y1, x2, y2 = line[0]
+#     cv2.line(image, (x1, y1), (x2, y2), (0, 0, 255), 2)
+    
 
-# Draw lines sequentially
-for line in lines:
-    x1, y1, x2, y2 = line[0]
-    cv2.line(image, (x1, y1), (x2, y2), (0, 0, 255), 2)
+#     cv2.imshow("Image with Vertical Lines", image)
+#     cv2.waitKey(0)  # Delay for visualization (adjust as needed)
 
-    cv2.imshow("Image with Vertical Lines", image)
-    cv2.waitKey(0)  # Delay for visualization (adjust as needed)
-
-cv2.destroyAllWindows()
+# cv2.destroyAllWindows()
 
 # import cv2
 # import numpy as np
@@ -106,3 +109,13 @@ cv2.destroyAllWindows()
 
 
 
+# import pytesseract
+# from PIL import Image
+# t=pytesseract.image_to_string(Image.open('shapes.png'),lang='eng', config='--psm 10')
+# print(t)
+
+import keras_ocr
+pipeline = keras_ocr.pipeline.Pipeline()
+
+t= keras_ocr.tools.readtext('shapes.png')
+print(t)

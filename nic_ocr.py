@@ -8,7 +8,10 @@ ret , thrash = cv2.threshold(imgGry, 240 , 255, cv2.CHAIN_APPROX_NONE)
 contours , hierarchy = cv2.findContours(thrash, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
 
 i=0
-for contour in contours:
+# sort coutours with respect to sequence and no skip
+sorted_contours =sorted(contours, key=lambda contour: cv2.boundingRect(contour)[1])
+
+for contour in sorted_contours:
     approx = cv2.approxPolyDP(contour, 0.01* cv2.arcLength(contour, True), True)
     # cv2.drawContours(img, [approx], 0, (0, 0, 0), 5)
     x = approx.ravel()[0]
@@ -21,10 +24,11 @@ for contour in contours:
         # w,h,x,y=71 ,66 ,1127 ,12
         if (w and h)>10 and (w and h)<100:
             print(w, h,i)
-            cv2.rectangle(img, (x, y), (x + w, y + h), (0, 0, 0), 5)
-            cv2.imwrite("shapes_{0}.png".format(i), img)
+            if i>=21:
+                cv2.rectangle(img, (x, y), (x + w, y + h), (0, 0, 0), 5)
+                cv2.imwrite("shapes_{0}.png".format(i), img)
             i+=1
-        if i == 7:
+        if i == 28:
             break
         
             # break
