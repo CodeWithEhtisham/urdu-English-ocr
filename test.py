@@ -120,22 +120,35 @@
 # ocr_keras = keras_ocr.pipeline.Pipeline()
 # t=ocr_keras.recognize([img])[0][0][0]
 # print(t)
+# import easyocr
+# reader = easyocr.Reader(['ur'])
+# text = reader.readtext('urdu.png')
 
-import cv2
-import pytesseract
-pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'  # Path to the Tesseract executable
-# pytesseract.pytesseract.TESSDATA_PREFIX = '/usr/share/tesseract-ocr/4.00/'  # Path to the tessdata directory
-# Load the image
-img = cv2.imread("urdu.png")
+import easyocr
+import re
 
-# Convert the image to grayscale
-gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+reader = easyocr.Reader(['ur'])
+text_boxes = reader.readtext('urdu.png')
+print(text_boxes)
+for box in text_boxes:
+    text = box[1]  # Extract the text from the box
+    text = re.sub(r'[^\u0600-\u06FF\s]', '', text)  # Remove non-Urdu characters except spaces
+    print(text)
+# import cv2
+# import pytesseract
+# pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'  # Path to the Tesseract executable
+# # pytesseract.pytesseract.TESSDATA_PREFIX = '/usr/share/tesseract-ocr/4.00/'  # Path to the tessdata directory
+# # Load the image
+# img = cv2.imread("shapes.png")
 
-# Perform thresholding to improve the OCR accuracy
-ret, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+# # Convert the image to grayscale
+# gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-# Extract the text from the image
-text = pytesseract.image_to_string(thresh, lang="urd")
+# # Perform thresholding to improve the OCR accuracy
+# ret, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
 
-# Print the extracted text
-print(text)
+# # Extract the text from the image
+# text = pytesseract.image_to_string(thresh, lang="eng")
+
+# # Print the extracted text
+# print(text)
