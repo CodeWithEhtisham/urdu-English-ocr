@@ -36,8 +36,8 @@ for contour in sorted_contours:
             text = english_ocr('shapes.png')
             print(text)
             i+=1
-        if i==13:
-            break
+        # if i==13:
+        #     break
         # if i%7 == 0:
         #     i=0
 

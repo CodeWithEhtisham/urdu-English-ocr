@@ -114,8 +114,28 @@
 # t=pytesseract.image_to_string(Image.open('shapes.png'),lang='eng', config='--psm 10')
 # print(t)
 
-import keras_ocr
-pipeline = keras_ocr.pipeline.Pipeline()
+# import keras_ocr
+# import cv2
+# img=cv2.imread("test.png")
+# ocr_keras = keras_ocr.pipeline.Pipeline()
+# t=ocr_keras.recognize([img])[0][0][0]
+# print(t)
 
-t= keras_ocr.tools.readtext('shapes.png')
-print(t)
+import cv2
+import pytesseract
+pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'  # Path to the Tesseract executable
+# pytesseract.pytesseract.TESSDATA_PREFIX = '/usr/share/tesseract-ocr/4.00/'  # Path to the tessdata directory
+# Load the image
+img = cv2.imread("urdu.png")
+
+# Convert the image to grayscale
+gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+# Perform thresholding to improve the OCR accuracy
+ret, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+
+# Extract the text from the image
+text = pytesseract.image_to_string(thresh, lang="urd")
+
+# Print the extracted text
+print(text)
