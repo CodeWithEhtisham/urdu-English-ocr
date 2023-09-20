@@ -120,19 +120,18 @@
 # ocr_keras = keras_ocr.pipeline.Pipeline()
 # t=ocr_keras.recognize([img])[0][0][0]
 # print(t)
-# import easyocr
-# reader = easyocr.Reader(['ur'])
-# text = reader.readtext('urdu.png')
+
 
 import easyocr
 import re
-
-reader = easyocr.Reader(['ur'])
-text_boxes = reader.readtext('urdu.png')
-print(text_boxes)
+numeric_regex = re.compile(r'\d+')
+reader = easyocr.Reader(['en'])
+text_boxes = reader.readtext('pic.jpeg')
+# print(text_boxes)
 for box in text_boxes:
     text = box[1]  # Extract the text from the box
-    text = re.sub(r'[^\u0600-\u06FF\s]', '', text)  # Remove non-Urdu characters except spaces
+    # text = re.sub(r'[^\u0600-\u06FF\s]', '', text)  # Remove non-Urdu characters except spaces
+    # text = re.findall(numeric_regex, text)
     print(text)
 # import cv2
 # import pytesseract
