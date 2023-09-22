@@ -1,7 +1,7 @@
 import numpy as np
 import cv2
 
-img = cv2.imread('pic.jpeg')
+img = cv2.imread('page-0.png')
 imgGry = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
 ret , thrash = cv2.threshold(imgGry, 240 , 255, cv2.CHAIN_APPROX_NONE)
@@ -12,7 +12,7 @@ i=0
 sorted_contours =sorted(contours, key=lambda contour: cv2.boundingRect(contour)[1])
 
 for contour in sorted_contours:
-    approx = cv2.approxPolyDP(contour, 0.04* cv2.arcLength(contour, True), True)
+    approx = cv2.approxPolyDP(contour, 0.01* cv2.arcLength(contour, True), True)
     # cv2.drawContours(img, [approx], 0, (0, 0, 0), 5)
     x = approx.ravel()[0]
     y = approx.ravel()[1] - 5
@@ -22,13 +22,13 @@ for contour in sorted_contours:
         x, y , w, h = cv2.boundingRect(approx)
         aspectRatio = float(w)/h
         # w,h,x,y=71 ,66 ,1127 ,12
-        if (w and h)>30 and (w and h)<150:
+        if (w and h)>10 and (w and h)<100:
             print(w, h,i)
-            if i>=150:
+            if i>=7:
                 cv2.rectangle(img, (x, y), (x + w, y + h), (0, 0, 0), 5)
                 cv2.imwrite("shapes_{0}.png".format(i), img)
             i+=1
-        if i == 165:
+        if i == 28:
             break
         
             # break

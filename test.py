@@ -29,37 +29,37 @@
 # # cv2.imshow('image', image)
 # cv2.waitKey()
 
-# import cv2
-# import numpy as np
+import cv2
+import numpy as np
 
-# # Load image, grayscale, Gaussian blur, Otsu's threshold
-# image = cv2.imread('pic.jpeg')
-# gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-# blur = cv2.GaussianBlur(gray, (3, 3), 0)
-# thresh = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)[1]
+# Load image, grayscale, Gaussian blur, Otsu's threshold
+image = cv2.imread('pic.jpeg')
+gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+blur = cv2.GaussianBlur(gray, (3, 3), 0)
+thresh = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)[1]
 
-# # Detect vertical lines
-# vertical_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (1, 50))
-# vertical_mask = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, vertical_kernel, iterations=1)
+# Detect vertical lines
+vertical_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (1, 50))
+vertical_mask = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, vertical_kernel, iterations=1)
 
-# # Detect lines using HoughLinesP
-# lines = cv2.HoughLinesP(vertical_mask, 1, np.pi / 180, 100, minLineLength=50, maxLineGap=100)
+# Detect lines using HoughLinesP
+lines = cv2.HoughLinesP(vertical_mask, 1, np.pi / 180, 100, minLineLength=50, maxLineGap=100)
 
-# # Sort lines by their starting x-coordinate
-# lines = sorted(lines, key=lambda line: line[0][0])
-# print(len(lines))
-# # Draw lines sequentially
-# w=0
-# h=0
-# for line in lines:
-#     x1, y1, x2, y2 = line[0]
-#     cv2.line(image, (x1, y1), (x2, y2), (0, 0, 255), 2)
+# Sort lines by their starting x-coordinate
+lines = sorted(lines, key=lambda line: line[0][0])
+print(len(lines))
+# Draw lines sequentially
+w=0
+h=0
+for line in lines:
+    x1, y1, x2, y2 = line[0]
+    cv2.line(image, (x1, y1), (x2, y2), (0, 0, 255), 2)
     
 
-#     cv2.imshow("Image with Vertical Lines", image)
-#     cv2.waitKey(0)  # Delay for visualization (adjust as needed)
+    cv2.imshow("Image with Vertical Lines", image)
+    cv2.waitKey(0)  # Delay for visualization (adjust as needed)
 
-# cv2.destroyAllWindows()
+cv2.destroyAllWindows()
 
 # import cv2
 # import numpy as np
@@ -120,20 +120,21 @@
 # ocr_keras = keras_ocr.pipeline.Pipeline()
 # t=ocr_keras.recognize([img])[0][0][0]
 # print(t)
+# import easyocr
+# reader = easyocr.Reader(['ur'])
+# text = reader.readtext('urdu.png')
 
+# import easyocr
+# import re
 
-import easyocr
-import re
-numeric_regex = re.compile(r'\d+')
-reader = easyocr.Reader(['en'])
-text_boxes = reader.readtext('pic.jpeg')
+# reader = easyocr.Reader(['ur'])
+# text_boxes = reader.readtext('urdu.png')
 # print(text_boxes)
-for box in text_boxes:
-    text = box[1]  # Extract the text from the box
-    # text = re.sub(r'[^\u0600-\u06FF\s]', '', text)  # Remove non-Urdu characters except spaces
-    # text = re.findall(numeric_regex, text)
-    print(text)
-# import cv2
+# for box in text_boxes:
+#     text = box[1]  # Extract the text from the box
+#     text = re.sub(r'[^\u0600-\u06FF\s]', '', text)  # Remove non-Urdu characters except spaces
+#     print(text)
+# # import cv2
 # import pytesseract
 # pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'  # Path to the Tesseract executable
 # # pytesseract.pytesseract.TESSDATA_PREFIX = '/usr/share/tesseract-ocr/4.00/'  # Path to the tessdata directory
